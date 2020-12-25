@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Alert, Platform, KeyboardAvoidingView, Image, ImageBackground } from 'react-native';
 import { scale, fonts, color_settings} from '../helpers/common_helpers';
-
+import OTPTextView from 'react-native-otp-textinput';
 import LoginInputWithLabel from './LoginInputWithLabel';
 const { height, width } = Dimensions.get('window');
 
@@ -89,7 +89,13 @@ export default class LoginScreen extends Component {
                             </TouchableOpacity>
                           :null}
                       </View>: <View >
-                        <LoginInputWithLabel
+                        <OTPTextView
+                          handleTextChange={(otp) => {this.handleTextChange('otp', otp);}}
+                          containerStyle={styles.textInputContainer}
+                          textInputStyle={styles.roundedTextInput}
+                          defaultValue={ this.state.otp}
+                        />
+                        {/* <LoginInputWithLabel
                             theme="light"
                             onRef={(r) => this.myField2 = r}
                             style={[styles.inputStyle, this.state.otpErr ? styles.error : null]}
@@ -106,7 +112,7 @@ export default class LoginScreen extends Component {
                             onChangeText={(otp) => {  this.handleTextChange('otp', otp); }}
                             onEndEditing={(otp) => {
                                 this.setState({otpErr: this.state.otpErrMsg? true : ''});
-                            }} />
+                            }} /> */}
                       </View> }
                       {this.state.otpMode?
                       <View style={{flexDirection:'row'}}>
@@ -138,11 +144,9 @@ checkEmailMark:{flex: .1, flexDirection: 'row', justifyContent: 'flex-end', posi
 verifyBtnStyle: { flex:0, backgroundColor: '#2296F3', padding: scale(13), marginTop:scale(40), justifyContent: 'center', alignItems: 'center',
     borderRadius:2, fontSize:16, color:'#FFFFFF',},
 inputStyle:     { marginHorizontal:scale(17), marginTop:0, marginBottom:scale(10) , fontSize:fonts.sizes.lg, color: '#fff', borderWidth:0, borderColor:'red', padding:0, paddingLeft:scale(47)},
-  Container: {
-    flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: 'space-between'
-  },
-  err:{marginTop:scale(-10), marginBottom:scale(5)},
+Container: { flex: 1, backgroundColor: "transparent",justifyContent: 'space-between'},
+err:{marginTop:scale(-10), marginBottom:scale(5)},
+textInputContainer: { marginTop: scale(20),marginBottom: scale(20)},
+roundedTextInput: { borderRadius: 10, borderWidth: 4,},
   
 });
