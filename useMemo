@@ -1,0 +1,45 @@
+const _renderItem = ({ item, index }) => {
+        return (
+            <TouchableOpacity style={CommonStylesheet.ViewContainer} onPress={() => goToEditScreen(item)} onLongPress={() => handlerLongClick(index)}>
+                {props.showCheckBox &&
+                    <Checkbox.Android style={styles.checkBox} color={colors.CHEKLIST} status={item.checked ? 'checked' : 'unchecked'}
+                        onPress={() => props.setCheckedById(item.ticketId, index)} />
+                }
+                <View style={CommonStylesheet.flex_21}>
+                    <View style={CommonStylesheet.flex_column}>
+                        {/* <Text style={CommonStylesheet.nameList}>{item.Issue}</Text> */}
+                        <Text style={CommonStylesheet.nameList}>{item.Issue.length < 17 ? item.Issue : item.Issue.substring(0, 17).replace(/\n/g, " ") + '..'}</Text>
+                        {/* <Text style={styles.nameList}>{`ID: ${item.Id}`}</Text> */}
+                    </View>
+                </View>
+                <View style={CommonStylesheet.flex_1_5} />
+                <Text style={CommonStylesheet.listText}>{item.CallDate.includes('1990') ? item.CallDate : Moment(item.CallDate, 'DD-MM-YYYY').format('DD MMM YY')}</Text>
+                <View style={CommonStylesheet.flex_2_5}></View>
+                <View style={CommonStylesheet.flex_8}>
+                    <Text style={CommonStylesheet.listText}>{`${item.CallTimeStart}\n${item.CallTimeEnd}`}</Text>
+                </View>
+                <View style={CommonStylesheet.flex_2_5}></View>
+                <TouchableOpacity onPress={() => props.onImageModal(true, item)}>
+                    <Image resizeMode={"contain"} source={item.Status == 'Solved' ? images.action : images.pending} style={CommonStylesheet.image_style} />
+                </TouchableOpacity>
+                <View style={CommonStylesheet.flex_1}></View>
+            </TouchableOpacity>
+        )
+    }
+    const memoizedRender = useMemo(() => _renderItem, [props.dataList])
+    
+    return (
+    <View style={CommonStylesheet.main}>
+                <FlatList
+                    contentContainerStyle={styles.contentContainerStyle}
+                    data={props.dataList}
+                    showsVerticalScrollIndicator={false}
+                    initialNumToRender={15}
+                    windowSize={10}
+                    updateCellsBatchingPeriod={20}
+                    renderItem={memoizedRender}
+                    keyExtractor={_keyExtractor} />
+            </View>
+    )
+    
+    
